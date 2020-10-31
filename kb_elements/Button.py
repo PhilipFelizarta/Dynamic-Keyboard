@@ -7,9 +7,6 @@ class Button:
 		self.diameter = diameter
 		self.character = character
 		self.font_name = font_name
-
-	# Sets up button font. Put this in the setup() method
-	def setupButton(self):
 		arial = create_font(self.font_name, 10)
 		text_font(arial)
 		text_align(CENTER, CENTER)
