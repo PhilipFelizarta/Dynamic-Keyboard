@@ -3,7 +3,11 @@ from p5 import *
 class Display:
   def __init__(self, coordinates):
     self.coordinates = coordinates
+    self.font_name = "arial.ttf"
+    arial = create_font(self.font_name, 15)
+    text_font(arial)
     text_align("LEFT", "BOTTOM")
+    #text_size(10)
 
   def drawTextBox(self, size):
     fill(255)
