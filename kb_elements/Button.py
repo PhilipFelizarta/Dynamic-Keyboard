@@ -61,3 +61,7 @@ class Button:
 		# White text
 		fill(255)
 		text(self.character, self.coordinates)
+
+	def pressKey(self, text_string):
+		if (self.getDistFromKey() <= self.diameter/2):
+			text_string.append(self.character)
