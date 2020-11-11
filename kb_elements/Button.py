@@ -16,7 +16,7 @@ class Button:
 		self.dist_from_key = dist(self.coordinates, (mouse_x, mouse_y))
 		return self.dist_from_key
 
-	# Returns the diameter of the button as a float
+	# Sets the diameter of the button
 	def setDiameter(self, diameter):
 		self.diameter = diameter
 
@@ -31,6 +31,19 @@ class Button:
 	# Returns the diameter of a button, usually a float
 	def getDiameter(self):
 		return self.diameter
+
+	# Returns the character of the button
+	def getCharacter(self):
+		return self.character
+
+	# Sets a new character for the button (used for capitalization)
+	def setCharacter(self, character):
+		self.character = character
+
+	# Sets the character to uppercase.
+	def setUpperCase(self, character):
+		upper_char = character.upper()
+		setCharacter(upper_char)
 
 	# Draws the button on the screen. Put this in the draw() method
 	def drawButton(self):
