@@ -26,7 +26,6 @@ def encode_state(character_list, enc_dict):
 
 	return string_state
 
-
 def encode_label(character, enc_dict):
 	import numpy as np
 	
@@ -38,3 +37,25 @@ def encode_label(character, enc_dict):
 def distr_to_radii(p, r_max=4, r_min=1):
 	radii = p * (r_max - r_min) + r_min #Numpy will broadcast the addition and multiplcation
 	return radii 
+
+def save_model(model, modelFile, weightFile): #Save model to json and weights to HDF5
+	from tensorflow.keras.models import model_from_json
+	model_json = model.to_json()
+	with open(modelFile, "w") as json_file:
+		json_file.write(model_json)
+	model.save_weights(weightFile)
+	print("Model saved!")
+
+def load_model(modelFile, weightFile, update=False): #load model from json and HDF5
+	from tensorflow.keras.models import model_from_json
+
+
+	json_file = open(modelFile, 'r')
+	load_model_json = json_file.read()
+	json_file.close()
+	if not update:
+		load_model = model_from_json(load_model_json)
+		
+	load_model.load_weights(weightFile)
+	print("Model Loaded!")
+	return load_model
