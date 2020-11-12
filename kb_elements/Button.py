@@ -51,7 +51,6 @@ class Button:
 		text_size(int((0.5)*self.diameter))
 
 		# If the mouse button is held down, fill with a lighter color
-		#TODO: Add text implementation
 		if mouse_is_pressed and (self.getDistFromKey() <= self.diameter/2):
 			fill(125)
 		else:
@@ -64,4 +63,12 @@ class Button:
 
 	def pressKey(self, text_string):
 		if (self.getDistFromKey() <= self.diameter/2):
-			text_string.append(self.character)
+			if(self.character == "\' \'"): #Space
+				text_string.append(" ")
+			elif(self.character == "<-"): #Backspace
+				del text_string[-1]
+			elif(self.character == "<-|"): #Return
+				print("".join(text_string))
+				del text_string[:]
+			else:													#Add character
+				text_string.append(self.character)
