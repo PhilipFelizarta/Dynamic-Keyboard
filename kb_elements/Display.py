@@ -15,6 +15,10 @@ class Display:
     rect(self.coordinates[0], self.coordinates[1], size[0], size[1])
 
   def drawText(self, text_string, coordinates):
-    self.text_string = text_string
+    display_length = len(text_string) - 31
+    if(display_length > 0):
+      self.text_string = text_string[display_length:-1]
+    else:
+      self.text_string = text_string
     fill(0)
     text(self.text_string, coordinates)
