@@ -7,7 +7,7 @@ import tensorflow as tf
 
 #Button list and string.
 text_string = []
-button_list = [None] * 29
+button_list = [None] * 30
 
 #Model setup
 model = load_model("predictive_model/slowmodel.json", "predictive_model/slowmodel.h5") #Import the trained model
@@ -48,6 +48,7 @@ def populateAlphabet(button, radii):
 	button[26] = Button((220, 130), 45, "<-")
 	button[27] = Button((220, 365), 45, "<-|")
 	button[28] = Button((30, 365), 45, "\' \'")
+	button[29] = Button((30, 130), 45, "^")
 
 def setup():
 	size(250, 400) #dimensions of a Galaxy S9
