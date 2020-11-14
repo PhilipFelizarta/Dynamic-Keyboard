@@ -7,7 +7,7 @@ import numpy as np
 text_string = []
 button_list = [None] * 29
 radii = np.full(26, 26)
-model = load_model("slowmodel.json", "slowmodel.h5") #Import the trained model
+model = load_model("predictive_model/slowmodel.json", "predictive_model/slowmodel.h5") #Import the trained model
 alphabet_dict = generate_dict()
 
 string_state = encode_state(text_string, alphabet_dict) #Convert typed text into a matrix for model input
