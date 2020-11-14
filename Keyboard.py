@@ -2,19 +2,18 @@ from kb_elements.Button import *
 from kb_elements.Display import *
 from predictive_model.helper import *
 import tensorflow as tf
+import numpy as np
 
-#Global variables, I know, they're bad.
-
-#Button list and string.
 text_string = []
-button_list = [None] * 30
-
-#Model setup
-model = load_model("predictive_model/slowmodel.json", "predictive_model/slowmodel.h5") #Import the trained model
+button_list = [None] * 29
+radii = np.full(26, 26)
+model = load_model("slowmodel.json", "slowmodel.h5") #Import the trained model
 alphabet_dict = generate_dict()
 
-#Initial size of 30
-radii = [30] * 26
+string_state = encode_state(text_string, alphabet_dict) #Convert typed text into a matrix for model input
+string_state = np.reshape(string_state, [1, 10, 26])
+
+distr = model.predict(string_state) #Call a prediction at initialization to get the machine runnin
 
 def populateAlphabet(button, radii):
 	#All 26 letter buttons.
@@ -26,7 +25,7 @@ def populateAlphabet(button, radii):
 	button[5] = Button((63, 230), radii[5], "f")
 	button[6] = Button((95, 213), radii[6], "g")
 	button[7] = Button((30, 250), radii[7], "h")
-	button[8] = Button((185, 270), radii[8], "i")
+	button[8] = Button((185, 265), radii[8], "i")
 	button[9] = Button((95, 320), radii[9], "j")
 	button[10] = Button((125, 305), radii[10], "k")
 	button[11] = Button((185, 230), radii[11], "l")
@@ -48,7 +47,6 @@ def populateAlphabet(button, radii):
 	button[26] = Button((220, 130), 45, "<-")
 	button[27] = Button((220, 365), 45, "<-|")
 	button[28] = Button((30, 365), 45, "\' \'")
-	button[29] = Button((30, 130), 45, "^")
 
 def setup():
 	size(250, 400) #dimensions of a Galaxy S9
@@ -63,7 +61,6 @@ def draw():
 
 	#Display box and text
 	display = Display((10, 10)); display.drawTextBox((230, 50)); display.drawText(string_by.join(text_string), (15, 45))
-
 	populateAlphabet(button_list, radii)
 	
 	for x in range(0, len(button_list)):
@@ -71,18 +68,25 @@ def draw():
 
 def mouse_released():
 	global text_string
-	global radii
+	global radii 
 
-	#Go through button list
 	for i in range(0, len(button_list)):
 		button_list[i].pressKey(text_string)
 
-	#Invoke model
-	string_state = encode_state(text_string, alphabet_dict) #Convert typed text into a matrix for model input
+
+	#Preprocessing to take the last word in the sentence
+	last_word = []
+	for char in text_string:
+		last_word.append(char)
+		if char == " ":
+			last_word = []
+
+	string_state = encode_state(last_word, alphabet_dict) #Convert typed text into a matrix for model input
 	string_state = np.reshape(string_state, [1, 10, 26])
+
 	distr = model.predict(string_state) #Get our prediction of likelihoods
 	distr = np.squeeze(distr) #Get rid of extra dimension [1,26] -> [26]
-	radii = distr_to_radii(distr, r_max=45, r_min=30)
+	radii = distr_to_radii(distr, r_max=45, r_min=25)
 
 if __name__ == '__main__':
 	run()
