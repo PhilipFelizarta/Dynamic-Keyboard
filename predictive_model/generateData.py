@@ -12,7 +12,12 @@ t0 = time() #time how long it takes to generate the dataset
 string_states = [] #List of string_states for input
 labels = [] #List of labels... note both lists must have same len()
 
+ind = 0
 for line in f: #Iterate through each line of the file
+	t1 = time()
+	if ind % 1000 == 1:
+		print("Length: ", len(labels), " Words: ", ind, " Time: ", t1-t0)
+
 	char_list = list(line)
 	length = len(char_list) - 1
 	char_list.pop() #Remove the last \n
@@ -20,13 +25,16 @@ for line in f: #Iterate through each line of the file
 	if length > 11: #We take 11 characters since input is 10 and label is 1
 		char_list = char_list[-11:]
 
-	if length > 1: #Don't take single characters for potential words
-		lab_char = char_list.pop() #Last character in substring is the label
+	while length > 1: #Don't take single characters for potential words
+		lab_char = char_list.pop() #Last character in substring is the label.. also allows iteration over substrings!
 		substring = char_list
 		state = helper.encode_state(substring, enc_dict)
 		label = helper.encode_label(lab_char, enc_dict)
 		string_states.append(state)
 		labels.append(label)
+		length = len(char_list)
+
+	ind += 1 #Count how many lines
 f.close()
 
 string_states = np.reshape(np.array(string_states), [-1, 10, 26])
