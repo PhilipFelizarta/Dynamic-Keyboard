@@ -11,6 +11,15 @@ class Button:
 		text_font(arial)
 		text_align(CENTER, CENTER)
 
+	def setupButton(self, coordinates, diameter, character, font_name="arial.ttf"):
+		self.coordinates = coordinates
+		self.diameter = diameter
+		self.character = character
+		self.font_name = font_name
+		arial = create_font(self.font_name, 10)
+		text_font(arial)
+		text_align(CENTER, CENTER)
+
 	# Calculates distance between button and mouse position, returns a float
 	def getDistFromKey(self):
 		self.dist_from_key = dist(self.coordinates, (mouse_x, mouse_y))
@@ -61,7 +70,7 @@ class Button:
 		fill(255)
 		text(self.character, self.coordinates)
 
-	def pressKey(self, text_string):
+	def pressKey(self, text_string, set_uppercase):
 		if (self.getDistFromKey() <= self.diameter/2):
 			if(self.character == "\' \'"): #Space
 				text_string.append(" ")
@@ -70,5 +79,7 @@ class Button:
 			elif(self.character == "<-|"): #Return
 				print("".join(text_string))
 				del text_string[:]
+			elif(self.character == "^"):
+				set_uppercase = not set_uppercase
 			else:													#Add character
 				text_string.append(self.character)
