@@ -118,7 +118,7 @@ def mouse_released():
 	last_word = []
 	for char in text_string:
 		last_word.append(char)
-		if char == " ":
+		if char == " " or char == "." or char == "," or char == "?" or char == "!":
 			last_word = []
 
 	string_state = encode_state(last_word, alphabet_dict) #Convert typed text into a matrix for model input
