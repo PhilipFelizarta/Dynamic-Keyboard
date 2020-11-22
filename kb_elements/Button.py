@@ -49,10 +49,11 @@ class Button:
 	def setCharacter(self, character):
 		self.character = character
 
-	# Sets the character to uppercase.
-	def setUpperCase(self, character):
-		upper_char = character.upper()
-		setCharacter(upper_char)
+	def setUppercase(self):
+		self.character = self.character.upper()
+
+	def setLowercase(self):
+		self.character = self.character.lower()
 
 	# Draws the button on the screen. Put this in the draw() method
 	def drawButton(self):
@@ -70,7 +71,7 @@ class Button:
 		fill(255)
 		text(self.character, self.coordinates)
 
-	def pressKey(self, text_string, set_uppercase):
+	def pressKey(self, text_string, set_case):
 		if (self.getDistFromKey() <= self.diameter/2):
 			if(self.character == "\' \'"): #Space
 				text_string.append(" ")
@@ -79,7 +80,8 @@ class Button:
 			elif(self.character == "<-|"): #Return
 				print("".join(text_string))
 				del text_string[:]
-			elif(self.character == "^"):
-				set_uppercase = not set_uppercase
-			else:													#Add character
+			elif(self.character == "^"): #Shift
+				set_case = not set_case
+				return set_case
+			else:												#Add character
 				text_string.append(self.character)

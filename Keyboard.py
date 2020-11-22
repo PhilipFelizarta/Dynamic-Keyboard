@@ -17,7 +17,7 @@ string_state = np.reshape(string_state, [1, 10, 26])
 
 distr = model.predict(string_state) #Call a prediction at initialization to get the machine runnin
 
-def populateAlphabet(button, radii, set_uppercase):
+def populateAlphabet(button, radii):
 	#All 26 letter buttons.
 	if(set_uppercase):
 		button[0] = Button((95, 250), radii[0], "A")
@@ -46,6 +46,10 @@ def populateAlphabet(button, radii, set_uppercase):
 		button[23] = Button((63, 195), radii[23], "X")
 		button[24] = Button((155, 175), radii[24], "Y")
 		button[25] = Button((185, 195), radii[25], "Z")
+		button[26] = Button((75, 125), 30, ";")
+		button[27] = Button((107, 115), 30, ":")
+		button[28] = Button((143, 115), 30, "!")
+		button[29] = Button((175, 125), 30, "\"")
 
 	else:
 		button[0] = Button((95, 250), radii[0], "a")
@@ -74,11 +78,11 @@ def populateAlphabet(button, radii, set_uppercase):
 		button[23] = Button((63, 195), radii[23], "x")
 		button[24] = Button((155, 175), radii[24], "y")
 		button[25] = Button((185, 195), radii[25], "z")
-
-	button[26] = Button((75, 125), 30, ",")
-	button[27] = Button((107, 115), 30, ".")
-	button[28] = Button((143, 115), 30, "?")
-	button[29] = Button((175, 125), 30, "'")
+		button[26] = Button((75, 125), 30, ",")
+		button[27] = Button((107, 115), 30, ".")
+		button[28] = Button((143, 115), 30, "?")
+		button[29] = Button((175, 125), 30, "'")
+	
 
 	button[30] = Button((220, 130), 45, "<-")
 	button[31] = Button((220, 365), 45, "<-|")
@@ -101,7 +105,7 @@ def draw():
 	#Display box and text
 	display = Display((10, 10)); display.drawTextBox((230, 50)); display.drawText(string_by.join(text_string), (15, 45))
 	
-	populateAlphabet(button_list, radii, set_uppercase)
+	populateAlphabet(button_list, radii)
 	
 	for x in range(0, len(button_list)):
 		button_list[x].drawButton()
@@ -109,17 +113,19 @@ def draw():
 def mouse_released():
 	global text_string
 	global radii 
+	global set_uppercase
 
 	for i in range(0, len(button_list)):
-		button_list[i].pressKey(text_string, set_uppercase)
-
+		set_uppercase = button_list[i].pressKey(text_string, set_uppercase)
 
 	#Preprocessing to take the last word in the sentence
 	last_word = []
 	for char in text_string:
 		last_word.append(char)
-		if char == " " or char == "." or char == "," or char == "?" or char == "!":
-			last_word = []
+		if (char == " " or char == "." or char == "," 
+				or char == "?" or char == "!" or char == ";" 
+				or char == ":" or char == "\'" or char == "\"" or char == char.upper()):
+					last_word = []
 
 	string_state = encode_state(last_word, alphabet_dict) #Convert typed text into a matrix for model input
 	string_state = np.reshape(string_state, [1, 10, 26])
